@@ -4,10 +4,28 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\StudentManagement.Domain\StudentManagement.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Common\Behaviors\" />
+    <Folder Include="Common\Exceptions\" />
+    <Folder Include="Common\Interfaces\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="Common\Results\" />
+    <Folder Include="Features\Authentication\" />
+    <Folder Include="Features\Courses\" />
+    <Folder Include="Features\Enrollments\" />
+    <Folder Include="Features\Attendance\" />
+    <Folder Include="Features\Marks\" />
+    <Folder Include="Features\Teachers\" />
+    <Folder Include="Features\Students\" />
+    <Folder Include="DependencyInjection\" />
   </ItemGroup>
 
 </Project>

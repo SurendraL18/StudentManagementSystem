@@ -1,4 +1,5 @@
 <Solution>
+  <Folder Name="/Solution Items/" />
   <Folder Name="/src/">
     <Project Path="StudentManagement.API/StudentManagement.API.csproj" />
     <Project Path="StudentManagement.Application/StudentManagement.Application.csproj" />
