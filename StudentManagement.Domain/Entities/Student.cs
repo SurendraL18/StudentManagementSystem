@@ -54,7 +54,7 @@ namespace StudentManagement.Domain.Entities
                 throw new ArgumentException("First Name is Required", nameof(firstName));
 
             if (string.IsNullOrWhiteSpace(lastName))
-                throw new ArgumentException("Last Name is Rrquired", nameof(lastName));
+                throw new ArgumentException("Last Name is Required", nameof(lastName));
 
             FirstName = firstName.Trim();
             LastName = lastName.Trim();

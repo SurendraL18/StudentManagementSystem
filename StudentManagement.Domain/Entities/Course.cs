@@ -15,15 +15,15 @@ public class Course : BaseEntity
     {
         if (string.IsNullOrWhiteSpace(code))
 
-            throw new ArgumentNullException("Code is Required", nameof(code));
+            throw new ArgumentException("Code is Required", nameof(code));
 
         if (string.IsNullOrWhiteSpace(title))
 
-            throw new ArgumentNullException("Code is Required", nameof(title));
+            throw new ArgumentException("Title is Required", nameof(title));
 
         if (capacity <= 0)
 
-            throw new ArgumentNullException("Capacity should be more than zero", nameof(capacity));
+            throw new ArgumentException("Capacity should be more than zero", nameof(capacity));
 
 
 
@@ -35,9 +35,49 @@ public class Course : BaseEntity
         IsActive = true;
     }
 
-    public void UpdateDetails(string code)
+    public void UpdateDetails(string title, string? description)
     {
-        Code = code ?? throw new ArgumentNullException("Code is Required", nameof(code));
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException("Title is Required", nameof(title));
+
+
+
+        Title = title.Trim();
+        Description = description?.Trim();
+
+
+    }
+
+    public void ChangeCapacity(int capacity)
+    {
+        if (capacity <= 0)
+            throw new ArgumentException("Course capacity must be greater than zero", nameof(capacity));
+
+        Capacity = capacity;
+    }
+
+    public void AssignTeacher(Guid teacherId)
+    {
+        if (teacherId == Guid.Empty)
+        {
+            throw new ArgumentException("Teacher is Required", nameof(teacherId));
+        }
+        TeacherId = teacherId;
+    }
+
+    public void RemoveTeacher()
+    {
+        TeacherId = null;
+    }
+
+    public void Activate()
+    {
+        IsActive = true;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
     }
 
 

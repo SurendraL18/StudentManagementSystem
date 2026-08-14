@@ -48,7 +48,7 @@ namespace StudentManagement.Domain.Entities
             if (string.IsNullOrWhiteSpace(firstName))
                 throw new ArgumentException("First Name is Required", (nameof(firstName)));
 
-            if (string.IsNullOrWhiteSpace(LastName))
+            if (string.IsNullOrWhiteSpace(lastName))
                 throw new ArgumentException("First Name is Required", (nameof(lastName)));
 
             FirstName = firstName.Trim();
@@ -77,7 +77,7 @@ namespace StudentManagement.Domain.Entities
             IsActive = false;
         }
 
-        public void Acitvate()
+        public void Activate()
         {
             IsActive = true;
         }
