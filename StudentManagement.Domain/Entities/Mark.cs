@@ -15,18 +15,18 @@ namespace StudentManagement.Domain.Entities
 
         public decimal MaxScore { get; private set; }
 
-        public decimal Percentage => MaxScore == 0 ? 0 : MaxScore / Percentage * 100;
+        public decimal Percentage => MaxScore == 0 ? 0 : Score / MaxScore * 100;
 
         public Mark(Guid studentId, Guid courseId, AssessmentType assessmentType, decimal score, decimal maxScore)
         {
 
             if (studentId == Guid.Empty)
-                throw new ArgumentException("StudendId is required", nameof(studentId));
+                throw new ArgumentException("Student Id is required", nameof(studentId));
 
             if (courseId == Guid.Empty)
-                throw new ArgumentException("CourseId is required", nameof(courseId));
+                throw new ArgumentException("Course Id is required", nameof(courseId));
 
-
+            ValidateScore(score, maxScore);
 
             StudentId = studentId;
             CourseId = courseId;

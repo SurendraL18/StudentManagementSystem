@@ -19,7 +19,7 @@ namespace StudentManagement.Domain.Entities
                 throw new ArgumentException("Student Id is Required", nameof(studentId));
 
             if (courseId == Guid.Empty)
-                throw new ArgumentException("Student Id is Required", nameof(courseId));
+                throw new ArgumentException("Course Id is Required", nameof(courseId));
 
             if (attendanceDate > DateOnly.FromDateTime(DateTime.UtcNow))
                 throw new ArgumentException("Attendance date cannot be in the future.", nameof(attendanceDate));
