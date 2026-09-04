@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using StudentManagement.Domain.Common;
 using StudentManagement.Domain.Entities;
 
 namespace StudentManagement.Infrastructure.Persistence.Context
@@ -24,6 +25,31 @@ namespace StudentManagement.Infrastructure.Persistence.Context
             base.OnModelCreating(modelBuilder);
         }
 
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries<BaseEntity>()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+            var utcNow = DateTime.UtcNow;
+
+            foreach (var entry in entries)
+            {
+
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedAtUtc = utcNow;
+                    entry.Entity.UpdatedAtUtc = utcNow;
+                }
+
+                else if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.UpdatedAtUtc = utcNow;
+                    entry.Property(x => x.CreatedAtUtc).IsModified = false;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
 
     }

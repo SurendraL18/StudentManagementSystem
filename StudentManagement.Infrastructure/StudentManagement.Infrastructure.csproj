@@ -15,7 +15,6 @@
     <Folder Include="Identity\" />
     <Folder Include="Caching\" />
     <Folder Include="Logging\" />
-    <Folder Include="DependencyInjection\" />
     <Folder Include="Persistence\Migrations\" />
     <Folder Include="Persistence\Repositories\" />
     <Folder Include="Services\" />
