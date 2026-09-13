@@ -49,6 +49,14 @@ namespace StudentManagement.Infrastructure.Persistence.Configurations
                 x.AssessmentType
             }).IsUnique();
 
+            builder.Property(x => x.CreatedAtUtc)
+                .HasColumnName("created_at_utc")
+                .IsRequired();
+
+            builder.Property(x => x.UpdatedAtUtc)
+                .HasColumnName("updated_at_utc")
+                .IsRequired();
+
         }
     }
 }
