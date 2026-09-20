@@ -11,6 +11,7 @@ namespace StudentManagement.Infrastructure.Persistence.Context
 
         }
 
+        public DbSet<User> Users => Set<User>();
         public DbSet<Student> Students => Set<Student>();
         public DbSet<Teacher> Teachers => Set<Teacher>();
         public DbSet<Course> Courses => Set<Course>();

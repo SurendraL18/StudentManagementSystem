@@ -1,4 +1,4 @@
-namespace StudentManagement.Domain.Enums
+    namespace StudentManagement.Domain.Enums
 {
     public enum UserRole
     {

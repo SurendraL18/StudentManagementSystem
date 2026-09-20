@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StudentManagement.Application.Common.Interfaces;
 using StudentManagement.Infrastructure.Persistence.Context;
+using StudentManagement.Infrastructure.Persistence.Stores;
+using StudentManagement.Infrastructure.Security;
 
 namespace StudentManagement.Infrastructure.DependencyInjection
 {
@@ -23,6 +26,9 @@ namespace StudentManagement.Infrastructure.DependencyInjection
             {
                 npgsqlOptions.MigrationsAssembly(typeof(StudentManagementDbContext).Assembly.FullName);
             }));
+
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IUserStore, UserStore>();
             return services;
         }
     }
