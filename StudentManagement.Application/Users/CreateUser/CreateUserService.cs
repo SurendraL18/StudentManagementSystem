@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 using StudentManagement.Application.Common.Interfaces;
+using StudentManagement.Domain.Entities;
 
 namespace StudentManagement.Application.Users.CreateUser
 {
@@ -13,20 +7,41 @@ namespace StudentManagement.Application.Users.CreateUser
     {
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUserStore _userStore;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public CreateUserService(IPasswordHasher passwordHasher, IUserStore userStore)
+        public CreateUserService(IPasswordHasher passwordHasher, IUserStore userStore, IUnitOfWork unitOfWork)
         {
             _passwordHasher = passwordHasher;
             _userStore = userStore;
+            _unitOfWork = unitOfWork;
         }
 
 
-        public async Task<CreateUserResponse> CreateAsync(CreateUserCommand command,CancellationToken cancellationToken= default)
+        public async Task<CreateUserResponse> CreateAsync(CreateUserCommand command, CancellationToken cancellationToken = default)
         {
             var existingUser = await _userStore.GetByEmailAsync(command.Email, cancellationToken);
-            if (existingUser != null) 
-            { throw new InvalidOperationException($"A user with the email '{command.Email}' already exists."); }
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException($"A user with the email '{command.Email}' already exists.");
+            }
+
+            string securedPasswordHash = _passwordHasher.Hash(command.Password);
+
+            var user = new User(
+             command.Email,
+             securedPasswordHash,
+             command.Role);
+
+            await _userStore.AddAsync(user, cancellationToken);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return new CreateUserResponse(
+              user.Id,
+              user.Email,
+              user.Role,
+              user.CreatedAtUtc);
         }
 
     }

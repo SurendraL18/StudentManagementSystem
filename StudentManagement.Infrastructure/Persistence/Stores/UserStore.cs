@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StudentManagement.Application.Common.Interfaces;
 using StudentManagement.Domain.Entities;
@@ -15,7 +9,7 @@ namespace StudentManagement.Infrastructure.Persistence.Stores
     {
         private readonly StudentManagementDbContext _context;
 
-        public UserStore (StudentManagementDbContext context)
+        public UserStore(StudentManagementDbContext context)
         {
             _context = context;
         }
@@ -28,8 +22,8 @@ namespace StudentManagement.Infrastructure.Persistence.Stores
 
             await _context.Users.AddAsync(user, cancellationToken);
         }
-            
-        
+
+
 
         public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
         {
@@ -38,7 +32,7 @@ namespace StudentManagement.Infrastructure.Persistence.Stores
                 return null;
             }
 
-            // Clean and normalize the input text to ensure case-insensitive matching safety
+
             var normalizedEmail = email.Trim().ToLowerInvariant();
 
             return await _context.Users

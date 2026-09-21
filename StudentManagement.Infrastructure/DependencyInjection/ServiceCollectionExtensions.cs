@@ -2,8 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StudentManagement.Application.Common.Interfaces;
+using StudentManagement.Application.Users.CreateUser;
 using StudentManagement.Infrastructure.Persistence.Context;
 using StudentManagement.Infrastructure.Persistence.Stores;
+using StudentManagement.Infrastructure.Persistence.UnitOfWork;
 using StudentManagement.Infrastructure.Security;
 
 namespace StudentManagement.Infrastructure.DependencyInjection
@@ -29,6 +31,8 @@ namespace StudentManagement.Infrastructure.DependencyInjection
 
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUserStore, UserStore>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<CreateUserService>();
             return services;
         }
     }
