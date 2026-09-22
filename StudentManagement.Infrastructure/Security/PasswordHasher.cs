@@ -6,7 +6,7 @@ namespace StudentManagement.Infrastructure.Security
     public class PasswordHasher : IPasswordHasher
     {
         private readonly PasswordHasher<string> _microsoftHasher = new();
-        private const string DummyUserContext = "";
+        private const string dummyUserContext = "";
         public string Hash(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
@@ -14,7 +14,7 @@ namespace StudentManagement.Infrastructure.Security
                 throw new ArgumentException("Password Cannot be empty", nameof(password));
             }
 
-            return _microsoftHasher.HashPassword(DummyUserContext, password);
+            return _microsoftHasher.HashPassword(dummyUserContext, password);
         }
 
         public bool Verify(string password, string hashedPassword)
@@ -24,7 +24,7 @@ namespace StudentManagement.Infrastructure.Security
                 return false;
             }
 
-            var result = _microsoftHasher.VerifyHashedPassword(DummyUserContext, hashedPassword, password);
+            var result = _microsoftHasher.VerifyHashedPassword(dummyUserContext, hashedPassword, password);
 
             return result == PasswordVerificationResult.Success ||
                    result == PasswordVerificationResult.SuccessRehashNeeded;
