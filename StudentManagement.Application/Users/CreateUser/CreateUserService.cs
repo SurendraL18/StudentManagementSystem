@@ -1,3 +1,4 @@
+using FluentValidation;
 using StudentManagement.Application.Common.Interfaces;
 using StudentManagement.Domain.Entities;
 
@@ -8,18 +9,21 @@ namespace StudentManagement.Application.Users.CreateUser
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUserStore _userStore;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<CreateUserCommand> _validator;
 
 
-        public CreateUserService(IPasswordHasher passwordHasher, IUserStore userStore, IUnitOfWork unitOfWork)
+        public CreateUserService(IPasswordHasher passwordHasher, IUserStore userStore, IUnitOfWork unitOfWork, IValidator<CreateUserCommand> validator)
         {
             _passwordHasher = passwordHasher;
             _userStore = userStore;
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
 
 
         public async Task<CreateUserResponse> CreateAsync(CreateUserCommand command, CancellationToken cancellationToken = default)
         {
+            await _validator.ValidateAndThrowAsync(command, cancellationToken);
             var existingUser = await _userStore.GetByEmailAsync(command.Email, cancellationToken);
             if (existingUser != null)
             {

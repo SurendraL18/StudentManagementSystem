@@ -23,7 +23,11 @@
     <Folder Include="Features\Marks\" />
     <Folder Include="Features\Teachers\" />
     <Folder Include="Features\Students\" />
-    <Folder Include="DependencyInjection\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
   </ItemGroup>
 
 </Project>
