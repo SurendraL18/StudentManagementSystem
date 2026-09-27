@@ -1,4 +1,5 @@
 using FluentValidation;
+using StudentManagement.Application.Common.Exceptions;
 using StudentManagement.Application.Common.Interfaces;
 using StudentManagement.Domain.Entities;
 
@@ -27,7 +28,7 @@ namespace StudentManagement.Application.Users.CreateUser
             var existingUser = await _userStore.GetByEmailAsync(command.Email, cancellationToken);
             if (existingUser != null)
             {
-                throw new InvalidOperationException($"A user with the email '{command.Email}' already exists.");
+                throw new DuplicateUserEmailException(command.Email);
             }
 
             string securedPasswordHash = _passwordHasher.Hash(command.Password);
@@ -39,7 +40,18 @@ namespace StudentManagement.Application.Users.CreateUser
 
             await _userStore.AddAsync(user, cancellationToken);
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex) when (ex.InnerException?.Message.Contains("IX_Users_Email") == true ||
+                                       ex.Message.Contains("IX_Users_Email") == true ||
+                                       ex.InnerException?.Message.Contains("unique constraint") == true)
+            {
+
+                throw new DuplicateUserEmailException(command.Email);
+            }
 
             return new CreateUserResponse(
               user.Id,

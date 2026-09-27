@@ -15,9 +15,9 @@ namespace StudentManagement.API.Controllers
             _createUserService = createUserService;
         }
         [HttpPost]
-        public async Task<ActionResult<CreateUserResponse>> CreateUser([FromBody] CreateUserCommand command, CancellationToken cancellationToken)
+        public async Task<ActionResult<CreateUserResponse>> CreateUser([FromBody] CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var response = await _createUserService.CreateAsync(command, cancellationToken);
+            var response = await _createUserService.CreateAsync(request, cancellationToken);
 
             return StatusCode(StatusCodes.Status201Created, response);
         }
