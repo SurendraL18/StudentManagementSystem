@@ -40,18 +40,8 @@ namespace StudentManagement.Application.Users.CreateUser
 
             await _userStore.AddAsync(user, cancellationToken);
 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            try
-            {
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-            }
-            catch (Exception ex) when (ex.InnerException?.Message.Contains("IX_Users_Email") == true ||
-                                       ex.Message.Contains("IX_Users_Email") == true ||
-                                       ex.InnerException?.Message.Contains("unique constraint") == true)
-            {
-
-                throw new DuplicateUserEmailException(command.Email);
-            }
 
             return new CreateUserResponse(
               user.Id,
