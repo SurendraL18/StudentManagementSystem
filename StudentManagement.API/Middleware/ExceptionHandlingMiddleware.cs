@@ -60,7 +60,7 @@ namespace StudentManagement.API.Middleware
                 };
             }
 
-            await context.Response.WriteAsJsonAsync(problemDetails);
+            await context.Response.WriteAsJsonAsync(problemDetails, options: null, contentType: "application/problem+json");
         }
     }
 }
