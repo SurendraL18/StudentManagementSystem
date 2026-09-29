@@ -20,7 +20,7 @@ public class LoginServiceTests
         _passwordHasher = new FakePasswordHasher();
         _tokenService = new FakeTokenService();
 
-        // Match exact constructor order: ITokenService -> IUserStore -> IPasswordHasher
+        // Aligned to your explicit constructor footprint sequence
         _sut = new LoginService(_tokenService, _userStore, _passwordHasher);
     }
 
@@ -28,10 +28,7 @@ public class LoginServiceTests
     public async Task LoginAsync_WithValidCredentials_ShouldReturnLoginResponse_WhenUserIsActive()
     {
         // Arrange
-        // Assuming default constructor sets status to Active, or adjust constructor signature if needed
         var user = new User("active@school.com", "HashedSecurePassword", UserRole.Student);
-
-        // If Status cannot be set externally, ensure your default User domain entity constructor initializes it as Active.
         _userStore.Users.Add(user);
 
         var request = new LoginRequest("active@school.com", "PlaintextPassword");
@@ -77,9 +74,9 @@ public class LoginServiceTests
         // Arrange
         var user = new User("inactive@school.com", "HashedSecurePassword", UserRole.Student);
 
-        // Use your domain's encapsulation method to transition status if setter is private (e.g., user.Deactivate())
-        // If an explicit method doesn't exist, we mimic the database load state by adding an inactive user to the fake store
-        _userStore.SimulateInactiveUserLoad(user);
+        // Utilizing the native domain rule capability instead of reflection
+        user.Deactivate();
+        _userStore.Users.Add(user);
 
         var request = new LoginRequest("inactive@school.com", "PlaintextPassword");
 
@@ -93,35 +90,10 @@ public class LoginServiceTests
     private class FakeUserStore : IUserStore
     {
         public List<User> Users { get; } = [];
-        private readonly List<string> _inactiveEmails = [];
-
-        public void SimulateInactiveUserLoad(User user)
-        {
-            Users.Add(user);
-            _inactiveEmails.Add(user.Email);
-        }
 
         public Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
         {
             var user = Users.SingleOrDefault(u => u.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase));
-
-            // If we simulated this user as inactive, intercept and override the read-only property value using reflection if necessary,
-            // or use a clean fake runtime state strategy:
-            if (user != null && _inactiveEmails.Contains(user.Email))
-            {
-                var statusField = typeof(User).GetProperty("Status");
-                if (statusField != null && statusField.CanWrite)
-                {
-                    statusField.SetValue(user, UserStatus.Inactive);
-                }
-                else
-                {
-                    // Fallback to backing field if no setter exists at all
-                    var backingField = typeof(User).GetField("<Status>k__BackingField", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    backingField?.SetValue(user, UserStatus.Inactive);
-                }
-            }
-
             return Task.FromResult(user);
         }
 

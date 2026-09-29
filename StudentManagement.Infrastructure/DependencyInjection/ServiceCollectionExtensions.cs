@@ -22,6 +22,8 @@ namespace StudentManagement.Infrastructure.DependencyInjection
                 throw new InvalidOperationException(
                     "Database connection string 'DefaultConnection' is not configured.");
 
+            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
             services.AddDbContext<StudentManagementDbContext>(options =>
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {

@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using StudentManagement.Application.Authentication;
 using StudentManagement.Application.Users.CreateUser;
 
 namespace StudentManagement.Application.DependencyInjection
@@ -13,6 +14,7 @@ namespace StudentManagement.Application.DependencyInjection
 
 
             services.AddScoped<CreateUserService>();
+            services.AddScoped<LoginService>();
 
             return services;
         }
