@@ -32,7 +32,6 @@ namespace StudentManagement.Infrastructure.Persistence.Stores
                 return null;
             }
 
-
             var normalizedEmail = email.Trim().ToLowerInvariant();
 
             return await _context.Users
