@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.Application.Authentication
 {
-    public record LoginResponse( string AccessToken,string RefreshToken,DateTimeOffset AccessTokenExpiresAt);
+    public record LoginResponse(string AccessToken, string RefreshToken, DateTimeOffset AccessTokenExpiresAt);
+
 }

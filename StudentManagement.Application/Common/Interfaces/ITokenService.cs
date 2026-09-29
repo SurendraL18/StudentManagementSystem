@@ -6,5 +6,6 @@ namespace StudentManagement.Application.Common.Interfaces
     public interface ITokenService
     {
         TokenResult GenerateTokens(Guid userId, string email, UserRole role);
+
     }
 }
