@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using StudentManagement.Application.Common.Interfaces;
@@ -46,7 +42,6 @@ namespace StudentManagement.Infrastructure.Security
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, email),
             new Claim(ClaimTypes.Role, role.ToString()),
-            // Unique token identifier for tracking
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
@@ -81,7 +76,6 @@ namespace StudentManagement.Infrastructure.Security
             var randomNumber = new byte[32];
             RandomNumberGenerator.Fill(randomNumber);
 
-            // Transformed into a URL-safe Base64 representation for seamless storage and transmission bounds
             return Convert.ToBase64String(randomNumber)
                 .Replace("+", "-")
                 .Replace("/", "_")

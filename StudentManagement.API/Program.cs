@@ -1,6 +1,10 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using StudentManagement.API.Middleware;
 using StudentManagement.Application.DependencyInjection;
 using StudentManagement.Infrastructure.DependencyInjection;
+using StudentManagement.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,44 @@ builder.Services.AddControllers()
  {
      options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
  });
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+
+if (jwtSettings == null || string.IsNullOrWhiteSpace(jwtSettings.SecretKey))
+{
+    throw new InvalidOperationException("JWT settings are missing from configuration.");
+}
+
+// 2. Configure Authentication with JWT Bearer scheme
+builder.Services.AddAuthentication(options =>
+{
+    // Sets the default scheme to "Bearer", meaning the app expects an "Authorization: Bearer <token>" header
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    // Define how incoming tokens should be validated
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        // Validates that the token was signed using our specific key
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+
+        // Validates who generated the token matches our expected issuer
+        ValidateIssuer = true,
+        ValidIssuer = jwtSettings.Issuer,
+
+        // Validates that the token was intended for our specific API audience
+        ValidateAudience = true,
+        ValidAudience = jwtSettings.Audience,
+
+        // Validates that the token has not expired yet
+        ValidateLifetime = true,
+
+        // Resets the default 5-minute clock skew (allowance for server time differences) to zero
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
@@ -30,7 +72,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

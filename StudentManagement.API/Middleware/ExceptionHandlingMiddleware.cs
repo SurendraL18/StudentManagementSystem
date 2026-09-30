@@ -32,7 +32,20 @@ namespace StudentManagement.API.Middleware
 
             ProblemDetails problemDetails;
 
-            if (exception is DuplicateUserEmailException duplicateEmailEx)
+            if (exception is InvalidCredentialsException invalidCredentialsEx)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+                problemDetails = new ProblemDetails
+                {
+                    Type = "/problems/invalid-credentials",
+                    Title = "Authentication failed.",
+                    Status = StatusCodes.Status401Unauthorized,
+                    Detail = invalidCredentialsEx.Message,
+                    Instance = context.Request.Path
+                };
+            }
+            else if (exception is DuplicateUserEmailException duplicateEmailEx)
             {
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
 

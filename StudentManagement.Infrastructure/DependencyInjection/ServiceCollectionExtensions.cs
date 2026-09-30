@@ -33,6 +33,7 @@ namespace StudentManagement.Infrastructure.DependencyInjection
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUserStore, UserStore>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITokenService, JwtTokenService>();
 
             return services;
         }
