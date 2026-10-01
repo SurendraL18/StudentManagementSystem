@@ -34,6 +34,7 @@ namespace StudentManagement.Infrastructure.DependencyInjection
             services.AddScoped<IUserStore, UserStore>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITokenService, JwtTokenService>();
+            services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
 
             return services;
         }

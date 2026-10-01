@@ -16,6 +16,7 @@ namespace StudentManagement.Application.DependencyInjection
             services.AddScoped<CreateUserService>();
             services.AddScoped<LoginService>();
 
+
             return services;
         }
     }

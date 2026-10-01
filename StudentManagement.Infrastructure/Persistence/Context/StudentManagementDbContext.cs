@@ -18,6 +18,7 @@ namespace StudentManagement.Infrastructure.Persistence.Context
         public DbSet<Enrollment> Enrollments => Set<Enrollment>();
         public DbSet<Attendance> Attendances => Set<Attendance>();
         public DbSet<Mark> Marks => Set<Mark>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
