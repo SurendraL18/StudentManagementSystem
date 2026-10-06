@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using StudentManagement.Application.Authentication;
+using StudentManagement.Application.Authentication.RefreshToken;
 using StudentManagement.Application.Users.CreateUser;
 
 namespace StudentManagement.Application.DependencyInjection
@@ -15,6 +16,7 @@ namespace StudentManagement.Application.DependencyInjection
 
             services.AddScoped<CreateUserService>();
             services.AddScoped<LoginService>();
+            services.AddScoped<RefreshTokenService>();
 
 
             return services;

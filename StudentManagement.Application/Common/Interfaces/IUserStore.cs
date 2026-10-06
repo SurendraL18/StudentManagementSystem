@@ -6,6 +6,8 @@ namespace StudentManagement.Application.Common.Interfaces
     {
         Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 
+        Task<User?> GetByIdAsync(Guid Id, CancellationToken cancellation = default);
+
         Task AddAsync(User user, CancellationToken cancellationToken = default);
 
     }

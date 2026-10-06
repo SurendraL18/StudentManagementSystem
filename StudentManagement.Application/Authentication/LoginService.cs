@@ -1,6 +1,5 @@
 using StudentManagement.Application.Common.Exceptions;
 using StudentManagement.Application.Common.Interfaces;
-using StudentManagement.Domain.Entities;
 using StudentManagement.Domain.Enums;
 
 namespace StudentManagement.Application.Authentication
@@ -79,7 +78,7 @@ namespace StudentManagement.Application.Authentication
 
             var hashedRefreshToken = _refreshTokenHasher.Hash(tokenResult.RefreshToken);
 
-            var refreshTokenEntity = new RefreshToken
+            var refreshTokenEntity = new Domain.Entities.RefreshToken
             (
                user.Id,
                hashedRefreshToken,
@@ -95,6 +94,8 @@ namespace StudentManagement.Application.Authentication
                 tokenResult.RefreshToken,
                 tokenResult.AccessTokenExpiresAt);
         }
+
+
 
     }
 }

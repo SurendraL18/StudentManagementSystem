@@ -38,5 +38,18 @@ namespace StudentManagement.Infrastructure.Persistence.Stores
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == normalizedEmail, cancellationToken);
         }
+
+        public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
+        {
+            if (userId == Guid.Empty)
+            {
+                return null;
+            }
+
+            return await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+        }
     }
 }
