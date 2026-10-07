@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Application.Users.CreateUser;
 
@@ -14,6 +15,8 @@ namespace StudentManagement.API.Controllers
         {
             _createUserService = createUserService;
         }
+
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<ActionResult<CreateUserResponse>> CreateUser([FromBody] CreateUserCommand request, CancellationToken cancellationToken)
         {

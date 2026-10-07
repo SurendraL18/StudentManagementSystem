@@ -11,7 +11,7 @@ namespace StudentManagement.UnitTests.Authentication
         [Fact]
         public void GenerateTokens_ShouldCreateValidAccessTokenWithExpectedClaims()
         {
-            // 1. Arrange - Setup real configuration using an IOptions wrapper wrapper mapping
+            // 1. Arrange - Setup real configuration using an IOptions wrapper
             var targetSettings = new JwtSettings
             {
                 SecretKey = "a_super_secure_test_signing_key_minimum_256_bits_long", // 53 characters
@@ -48,7 +48,9 @@ namespace StudentManagement.UnitTests.Authentication
             // 5. Extract and evaluate target claims statements
             var actualSub = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
             var actualEmail = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
-            var actualRole = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            // FIX: Check for the standard JWT "role" key, with a fallback to the Microsoft ClaimTypes URI
+            var actualRole = jwtToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role)?.Value;
 
             Assert.Equal(suppliedUserId.ToString(), actualSub);
             Assert.Equal(suppliedEmail, actualEmail);

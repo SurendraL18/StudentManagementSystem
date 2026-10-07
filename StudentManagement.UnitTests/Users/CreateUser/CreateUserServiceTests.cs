@@ -107,6 +107,11 @@ public class FakeUserStore : IUserStore
         SavedUser = user; // Catches the in-memory object entity state configuration passed from the orchestrator
         return Task.CompletedTask;
     }
+
+    Task<User?> IUserStore.GetByIdAsync(Guid Id, CancellationToken cancellation)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class FakePasswordHasher : IPasswordHasher

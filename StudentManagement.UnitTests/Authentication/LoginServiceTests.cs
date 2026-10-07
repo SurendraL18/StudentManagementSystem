@@ -469,6 +469,11 @@ public class LoginServiceTests
 
             return Task.CompletedTask;
         }
+
+        Task<User?> IUserStore.GetByIdAsync(Guid Id, CancellationToken cancellation)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     private class FakePasswordHasher : IPasswordHasher

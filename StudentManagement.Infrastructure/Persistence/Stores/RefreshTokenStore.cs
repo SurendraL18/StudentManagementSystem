@@ -33,7 +33,6 @@ namespace StudentManagement.Infrastructure.Persistence.Stores
 
 
             return await _context.Set<RefreshToken>()
-                .AsNoTracking()
                 .SingleOrDefaultAsync(rt => rt.Token == tokenHash, cancellationToken);
         }
     }

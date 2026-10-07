@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Application.Authentication;
+using StudentManagement.Application.Authentication.RefreshToken;
 
 namespace StudentManagement.API.Controllers
 {
@@ -10,10 +11,12 @@ namespace StudentManagement.API.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly LoginService _loginService;
+        private readonly RefreshTokenService _refreshTokenService;
 
-        public AuthenticationController(LoginService loginService)
+        public AuthenticationController(LoginService loginService, RefreshTokenService refreshTokenService)
         {
             _loginService = loginService;
+            _refreshTokenService = refreshTokenService;
         }
 
         [HttpPost("login")]
@@ -44,6 +47,18 @@ namespace StudentManagement.API.Controllers
                 Email = email,
                 Role = role
             });
+        }
+
+        [HttpPost("refresh")]
+        public async Task<ActionResult<RefreshTokenResponse>> Refresh(
+        [FromBody] RefreshTokenRequest request,
+        CancellationToken cancellationToken)
+        {
+            var response = await _refreshTokenService.RefreshAsync(
+                request,
+                cancellationToken);
+
+            return Ok(response);
         }
     }
 }
